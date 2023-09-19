@@ -12,7 +12,13 @@ export const UserForm = () => {
         return emailPattern.test(email);
     }
 
-    const form = useForm<formType>();
+    const form = useForm<formType>({
+        defaultValues: {
+            username: "user",
+            email: "user@email.com",
+            course: "course"
+        }
+    });
     const {register, control, handleSubmit, formState} = form;
     const {errors} = formState;
 
