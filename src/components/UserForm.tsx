@@ -1,12 +1,17 @@
 import {useForm} from "react-hook-form";
 import {DevTool} from "@hookform/devtools";
+import {formType} from "../types/formType";
 
 export const UserForm = () => {
-    const form = useForm();
-    const {register} = form;
+    const form = useForm<formType>();
+    const {register, control, handleSubmit} = form;
+
+    const onSubmit = (data: formType) => {
+        console.log("Form submitted: ", data);
+    }
     return (
         <div>
-            <form className="form-container">
+            <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username">Username</label>
                 <input type="text" id="username" {...register("username")}/>
 
@@ -18,6 +23,7 @@ export const UserForm = () => {
 
                 <button>Submit</button>
             </form>
+            <DevTool control={control}/>
         </div>
     )
 }
