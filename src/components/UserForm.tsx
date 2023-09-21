@@ -19,7 +19,12 @@ export const UserForm = () => {
             course: "course"
         }
     });
-    const {register, control, handleSubmit, formState} = form;
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState
+    } = form;
     const {errors} = formState;
 
     const onSubmit = (data: formType) => {
@@ -27,7 +32,7 @@ export const UserForm = () => {
     }
     return (
         <div>
-            <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
+            <form className="form-container" noValidate={true} onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-control">
                     <label htmlFor="username">Username</label>
                     <input
@@ -46,13 +51,12 @@ export const UserForm = () => {
                         id="email"
                         {...register("email", {
                                 required: "Email address is required",
-                                pattern: {
-                                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                                    message: "Invalid emaill format"
-                                },
+                                // pattern: {
+                                //     value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                                //     message: "Invalid email format"
+                                // },
                                 validate: (fieldValue) => {
-                                    console.log(fieldValue)
-                                    if (! isValidEmail(fieldValue)) {
+                                    if (!isValidEmail(fieldValue)) {
                                         return "Enter a valid email address";
                                     }
                                 }
