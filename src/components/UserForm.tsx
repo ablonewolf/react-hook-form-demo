@@ -12,11 +12,38 @@ export const UserForm = () => {
         return emailPattern.test(email);
     }
 
+    function isValidCourse(course: string): boolean {
+        const coursePattern = /^[a-zA-Z\s]*$/;
+        return coursePattern.test(course);
+
+    }
+
+    function isValidLinkedinProfile(url: string): boolean {
+        const urlPattern = /^(https:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9-_.]+$/;
+        return urlPattern.test(url);
+    }
+
+    function isValidGithubProfile(url: string): boolean {
+        const urlPattern = /^(https:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+$/;
+        return urlPattern.test(url);
+    }
+
+    function isValidPhoneNumber(phoneNumber: string): boolean {
+        const phoneNumberPattern = /^\d{10}$/;
+        return phoneNumberPattern.test(phoneNumber);
+    }
+
     const form = useForm<formType>({
         defaultValues: {
             username: "user",
             email: "user@email.com",
-            course: "course"
+            course: "course",
+            social: {
+                github: "github profile link",
+                linkedin: "LinkedIn profile link"
+            },
+            phoneNumber: []
+
         }
     });
     const {
@@ -71,11 +98,80 @@ export const UserForm = () => {
                         type="text"
                         id="course"
                         {...register("course", {
-                                required: "Course name is requried."
+                                required: "Course name is required.",
+                                validate: (fieldValue) => {
+                                    if (!isValidCourse(fieldValue)) {
+                                        return "Enter a valid course name";
+                                    }
+                                }
                             }
                         )}
                     />
                     <p className="error">{errors.course?.message}</p>
+                </div>
+
+                <div className="form-control">
+                    <label htmlFor="github">Github</label>
+                    <input
+                        type="text"
+                        id="github"
+                        {...register("social.github", {
+                            validate: (fieldValue) => {
+                                if (!isValidGithubProfile(fieldValue)) {
+                                    return "Enter a valid github url";
+                                }
+                            }
+                        })}
+                    />
+                    <p className="error">{errors.social?.github?.message}</p>
+                </div>
+
+                <div className="form-control">
+                    <label htmlFor="linkedin">LinkedIn</label>
+                    <input
+                        type="text"
+                        id="github"
+                        {...register("social.linkedin", {
+                            validate: (fieldValue) => {
+                                if (!isValidLinkedinProfile(fieldValue)) {
+                                    return "Enter a valid LinkedIn URL";
+                                }
+                            }
+                        })}
+                    />
+                    <p className="error">{errors.social?.linkedin?.message}</p>
+                </div>
+
+                <div className="form-control">
+                    <label htmlFor="primaryPhone">Primary Phone Number</label>
+                    <input
+                        type="text"
+                        id="primaryPhone"
+                        {...register("phoneNumber.0", {
+                            required: "Primary Phone Number is required",
+                            validate: (fieldValue) => {
+                                if (!isValidPhoneNumber(fieldValue)) {
+                                    return "Enter a valid phone number";
+                                }
+                            }
+                        })}
+                    />
+                    <p className="error">{errors.phoneNumber?.message}</p>
+                </div>
+                <div className="form-control">
+                    <label htmlFor="secondaryPhone">Secondary Phone Number</label>
+                    <input
+                        type="text"
+                        id="secondaryPhone"
+                        {...register("phoneNumber.1", {
+                            validate: (fieldValue) => {
+                                if (!isValidPhoneNumber(fieldValue)) {
+                                    return "Enter a valid phone number";
+                                }
+                            }
+                        })}
+                    />
+                    <p className="error">{errors.phoneNumber?.message}</p>
                 </div>
 
                 <button>Submit</button>
